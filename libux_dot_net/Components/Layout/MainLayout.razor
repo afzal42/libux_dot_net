@@ -13,45 +13,94 @@
         <article class="content px-4">
             @Body
             <p>
-                cd ~/projects/clubeez/app/data_broker_servers/clubeez-data-broker/
+                <div>
+                    cd ~/projects/clubeez/app/data_broker_servers/clubeez-data-broker/
+                </div>
+                <div>
+                    git reset --hard && git pull
 
-                git reset --hard && git pull
+                </div>
+                <div>
+                    rm -f Data.Broker.Service/appsettings.staging.json
 
-                rm -f Data.Broker.Service/appsettings.staging.json
+                </div>
+                <div>
+                    cp ~/projects/clubeez/configs/data_broker_servers/Data.Broker.Service/appsettings.staging.json Data.Broker.Service/
 
-                cp ~/projects/clubeez/configs/data_broker_servers/Data.Broker.Service/appsettings.staging.json Data.Broker.Service/
+                </div>
+                <div>
+                    rm -rf /tmp/data-broker
 
-                rm -rf /tmp/data-broker
+                </div>
+                <div>
+                    cp -a /opt/data-broker /tmp/
 
-                cp -a /opt/data-broker /tmp/
+                </div>
+                <div>
+                    rm -rf /opt/data-broker/*
 
-                rm -rf /opt/data-broker/*
+                </div>
+                <div>
+                    cd Data.Broker.Service/
 
-                cd Data.Broker.Service/
+                </div>
+                <div>
+                    dotnet publish --output /opt/data-broker/
 
-                dotnet publish --output /opt/data-broker/
+                </div>
+                <div>
+                    sudo systemctl restart stage-data-broker.clubeez.com.service
 
-                sudo systemctl restart stage-data-broker.clubeez.com.service
-
-                sudo systemctl status stage-data-broker.clubeez.com.service
+                </div>
+                <div>
+                    sudo systemctl status stage-data-broker.clubeez.com.service
+                </div>
             </p>
             <p>
-                [Unit]
-                Description=stage-data-broker.clubeez.com
+                <div>
+                    [Unit]
+                </div>
+                <div>
+                    Description=stage-data-broker.clubeez.com
 
-                [Service]
-                WorkingDirectory=/opt/data-broker
-                ExecStart=/usr/bin/dotnet /opt/data-broker/Data.Broker.Service.dll --environment "staging"
-                Restart=always
-                RestartSec=10 # Restart service after 10 seconds if dotnet service crashes
-                SyslogIdentifier=stage-data-broker.clubeez.com
-                User=webalive
-                Environment="ASPNETCORE_URLS=http://*:7002"
-                Environment="ASPNETCORE_ENVIRONMENT=staging"
-                Environment="LOG_DIRECTORY=logs/stage-data-broker.clubeez.com"
+                </div>
+                <div>
+                    [Service]
+                </div>
+                <div>
+                    WorkingDirectory=/opt/data-broker
+                </div>
+                <div>
+                    ExecStart=/usr/bin/dotnet /opt/data-broker/Data.Broker.Service.dll --environment "staging"
+                </div>
+                <div>
+                    Restart=always
+                </div>
+                <div>
+                    RestartSec=10 # Restart service after 10 seconds if dotnet service crashes
+                </div>
+                <div>
+                    SyslogIdentifier=stage-data-broker.clubeez.com
+                </div>
+                <div>
+                    User=webalive
+                </div>
+                <div>
+                    Environment="ASPNETCORE_URLS=http://*:7002"
+                </div>
+                <div>
+                    Environment="ASPNETCORE_ENVIRONMENT=staging"
+                </div>
+                <div>
+                    Environment="LOG_DIRECTORY=logs/stage-data-broker.clubeez.com"
 
-                [Install]
-                WantedBy=multi-user.target
+                </div>
+                <div>
+                    [Install]
+                </div>
+                <div>
+                    WantedBy=multi-user.target
+                </div>
             </p>
         </article>
     </main>
