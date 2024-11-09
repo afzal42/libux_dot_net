@@ -12,6 +12,47 @@
 
         <article class="content px-4">
             @Body
+            <p>
+                cd ~/projects/clubeez/app/data_broker_servers/clubeez-data-broker/
+
+                git reset --hard && git pull
+
+                rm -f Data.Broker.Service/appsettings.staging.json
+
+                cp ~/projects/clubeez/configs/data_broker_servers/Data.Broker.Service/appsettings.staging.json Data.Broker.Service/
+
+                rm -rf /tmp/data-broker
+
+                cp -a /opt/data-broker /tmp/
+
+                rm -rf /opt/data-broker/*
+
+                cd Data.Broker.Service/
+
+                dotnet publish --output /opt/data-broker/
+
+                sudo systemctl restart stage-data-broker.clubeez.com.service
+
+                sudo systemctl status stage-data-broker.clubeez.com.service
+            </p>
+            <p>
+                [Unit]
+                Description=stage-data-broker.clubeez.com
+
+                [Service]
+                WorkingDirectory=/opt/data-broker
+                ExecStart=/usr/bin/dotnet /opt/data-broker/Data.Broker.Service.dll --environment "staging"
+                Restart=always
+                RestartSec=10 # Restart service after 10 seconds if dotnet service crashes
+                SyslogIdentifier=stage-data-broker.clubeez.com
+                User=webalive
+                Environment="ASPNETCORE_URLS=http://*:7002"
+                Environment="ASPNETCORE_ENVIRONMENT=staging"
+                Environment="LOG_DIRECTORY=logs/stage-data-broker.clubeez.com"
+
+                [Install]
+                WantedBy=multi-user.target
+            </p>
         </article>
     </main>
 </div>
